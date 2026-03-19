@@ -1,13 +1,12 @@
 import java.time.LocalDateTime;
 
-public abstract class Instrument {
+public abstract class Instrument implements Tradeable, Priceable {
     private final String symbol;
     private String name;
     private double currentPrice;
     private LocalDateTime lastUpdated;
 
     public Instrument(String symbol, String name, double currentPrice) {
-        // TODO
         this.symbol = symbol;
         this.name = name;
         this.currentPrice = currentPrice;
@@ -19,7 +18,6 @@ public abstract class Instrument {
     public abstract String assetClass();
     
     public void updatePrice(double newPrice) {
-        // TODO
         if (newPrice < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
@@ -27,29 +25,41 @@ public abstract class Instrument {
         this.lastUpdated = LocalDateTime.now();
     }
 
+    @Override
     public String getSymbol() {
-        // TODO
         return this.symbol;
     }
-
+    
     public String getName() {
-        // TODO
         return this.name;
     }
 
+    @Override
     public double getCurrentPriceValue() {
-        // TODO
         return this.currentPrice;
     }
 
     public LocalDateTime getLastUpdated() {
-        // TODO
         return this.lastUpdated;
     }
 
     @Override
     public String toString() {
-        // TODO
         return "Instrument[symbol = %s, price = %.2f, risk = %.2f]".formatted(this.symbol, this.currentPrice, this.riskScore());
+    }
+
+    @Override
+    public double getPriceChange(double previousPrice) {
+        return this.currentPrice - previousPrice;
+    }
+
+    @Override
+    public double getPriceChangePercent(double previousPrice) {
+        return ((this.currentPrice - previousPrice) / previousPrice) * 100;
+    }
+
+    @Override
+    public boolean isAvailableForTrading() {
+        return true;
     }
 }

@@ -6,7 +6,6 @@ public interface Tradeable {
     boolean isAvailableForTrading();
 
     default String getTradingInfo() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return "Tradeable: %s at %.2f (Available)".formatted(this.getSymbol(), this.getCurrentPriceValue());
     }
 }

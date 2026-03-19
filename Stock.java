@@ -4,14 +4,12 @@ public class Stock extends Instrument {
 
     public Stock(String symbol, String name, double currentPrice, double marketCap, String sector) {
         super(symbol, name, currentPrice);
-        // TODO
         this.marketCap = marketCap;
         this.sector = sector;
     }
 
     @Override
     public double riskScore() {
-        // TODO
         if (this.marketCap < 1e9) {
             return 7.5;
         } else if (this.marketCap < 1e10) {
@@ -23,17 +21,14 @@ public class Stock extends Instrument {
 
     @Override
     public String assetClass() {
-        // TODO
         return "EQUITY";
     }
     
     public double getMarketCap() {
-        // TODO
         return this.marketCap;
     }
 
     public String getSector() {
-        // TODO
         return this.sector;
     }
 }
