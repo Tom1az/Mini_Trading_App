@@ -48,6 +48,6 @@ public class Main {
         Priceable us10yBond = US10Y;
         System.out.println("US10Y current price value: " + us10yBond.getCurrentPriceValue());
         System.out.println("US10Y price change: " + us10yBond. getPriceChange(130.0));
-        System.out.println("US10Y prive change percent: " + us10yBond.getPriceChangePercent(130.0));
+        System.out.println("US10Y prive change percent  : " + us10yBond.getPriceChangePercent(130.0));
     }
 }

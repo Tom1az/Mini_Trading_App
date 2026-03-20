@@ -4,27 +4,55 @@ public class RiskAnalyzer<T extends Instrument> {
     private final List<T> instruments = new ArrayList<>();
 
     public void add(T instrument) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        if (!instruments.contains(instrument)) instruments.add(instrument);
     }
 
     public double averageRisk() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        if (instruments.isEmpty()) return 0;
+
+        double totalRiskScore = 0; 
+        for (Instrument i : instruments) {
+            totalRiskScore += i.riskScore();
+        }
+
+        return totalRiskScore / instruments.size();
     }
 
     public T highestRisk() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        if (instruments.isEmpty()) return null;
+
+        T maxRiskInstrument = instruments.get(0);
+
+        for (T i : instruments) {
+            if (i.riskScore() > maxRiskInstrument.riskScore()) {
+                maxRiskInstrument = i; 
+            }
+        }
+
+        return maxRiskInstrument;
     }
 
     public T lowestRisk() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        if (instruments.isEmpty()) return null;
+
+        T minRiskInstrument = instruments.get(0);
+
+        for (T i : instruments) {
+            if (i.riskScore() < minRiskInstrument.riskScore()) {
+                minRiskInstrument = i; 
+            }
+        }
+
+        return minRiskInstrument;
     }
 
     public List<T> getAboveRiskThreshold(double threshold) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        List<T> safeInstrument = new ArrayList<>();
+        
+        for (T i : instruments) {
+            if (i.riskScore() > threshold) safeInstrument.add(i);
+        }
+
+        return safeInstrument;
     }
 }

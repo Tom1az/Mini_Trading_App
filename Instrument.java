@@ -17,6 +17,8 @@ public abstract class Instrument implements Tradeable, Priceable {
 
     public abstract String assetClass();
     
+    public abstract void accept(InstrumentVisitor visitor);
+    
     public void updatePrice(double newPrice) {
         if (newPrice < 0) {
             throw new IllegalArgumentException("Price cannot be negative");

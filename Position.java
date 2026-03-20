@@ -4,43 +4,39 @@ public class Position {
     private double averageCostBasis;
 
     public Position(Instrument instrument, int quantity, double averageCostBasis) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        this.instrument = instrument;
+        this.quantity = quantity;
+        this.averageCostBasis = averageCostBasis;
     }
 
     public double marketValue() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return this.quantity * instrument.getCurrentPriceValue();
     }
 
     public double unrealizedPnL() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
-    }
+        return this.marketValue() - this.quantity * this.averageCostBasis;
+    }   
 
     public void addQuantity(int qty, double costBasis) {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        if (qty < 0 || costBasis < 0 || (qty == 0 && costBasis == 0)) return;
+        this.averageCostBasis = (this.quantity * this.averageCostBasis + qty * costBasis) / (this.quantity + qty);
+        this.quantity += qty;
     }
 
     public Instrument getInstrument() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+       return this.instrument;
     }
 
     public int getQuantity() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return this.quantity;
     }
 
     public double getAverageCostBasis() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+        return this.averageCostBasis;
     }
 
     @Override
     public String toString() {
-        // TODO
-        throw new UnsupportedOperationException("TODO");
+       return "";
     }
 }
