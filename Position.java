@@ -37,6 +37,12 @@ public class Position {
 
     @Override
     public String toString() {
-       return "";
+       return "%s[symbol=%s, qty=%d, value=%.2f, pnl=%.2f]".formatted(
+           this.getClass().getSimpleName(),
+           this.instrument.getSymbol(),
+           this.quantity,
+           this.marketValue(),
+           this.unrealizedPnL()
+       );
     }
 }

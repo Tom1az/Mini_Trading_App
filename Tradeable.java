@@ -6,6 +6,9 @@ public interface Tradeable {
     boolean isAvailableForTrading();
 
     default String getTradingInfo() {
-        return "Tradeable: %s at %.2f (Available)".formatted(this.getSymbol(), this.getCurrentPriceValue());
+        if (!this.isAvailableForTrading()) {
+            return "%s @ %.2f [UNAVAILABLE]".formatted(this.getSymbol(), this.getCurrentPriceValue());
+        }
+        return "%s @ %.2f [AVAILABLE]".formatted(this.getSymbol(), this.getCurrentPriceValue());
     }
 }

@@ -47,7 +47,7 @@ public abstract class Instrument implements Tradeable, Priceable {
 
     @Override
     public String toString() {
-        return "Instrument[symbol = %s, price = %.2f, risk = %.2f]".formatted(this.symbol, this.currentPrice, this.riskScore());
+        return "%s[symbol=%s, price=%s, risk=%s]".formatted(this.getClass().getSimpleName(), this.symbol, this.currentPrice, this.riskScore());
     }
 
     @Override

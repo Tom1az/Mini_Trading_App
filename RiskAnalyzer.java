@@ -4,7 +4,36 @@ public class RiskAnalyzer<T extends Instrument> {
     private final List<T> instruments = new ArrayList<>();
 
     public void add(T instrument) {
-        if (!instruments.contains(instrument)) instruments.add(instrument);
+        T oldInstrument = null;
+
+        for (T i : instruments) {
+            if (i.getSymbol().equals(instrument.getSymbol())) {
+                oldInstrument = i;
+                break;
+            }
+        }
+
+        if (oldInstrument != null) {
+            instruments.remove(oldInstrument);
+            instruments.add(instrument);
+        } else instruments.add(instrument);
+    }
+
+    public void removeInstrument(T instrument) {
+        T toRemove = null;
+
+        for (T i : instruments) {
+            if (i.getSymbol().equals(instrument.getSymbol())) {
+                toRemove = instrument;
+                break;
+            }
+        }
+
+        if (toRemove == null) {
+            return;
+        }
+        
+        instruments.remove(toRemove);
     }
 
     public double averageRisk() {

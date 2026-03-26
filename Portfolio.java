@@ -15,14 +15,23 @@ public class Portfolio implements Observable<String> {
 
     public void addPosition(Instrument inst, int qty, double costBasis) {
         if (qty < 0 || costBasis < 0) return;
+
+        Position existingPosition = null;
+
         for (Position pos : positions) {
             if (pos.getInstrument().getSymbol().equals(inst.getSymbol())) {
-                pos.addQuantity(qty, costBasis);
-                this.notifyObservers("ADDED: " + inst.getSymbol() + " x" + qty);
-                return;
+                existingPosition = pos;
+                break;
             }
         }
-        positions.add(new Position(inst, qty, costBasis));
+
+        if (existingPosition != null) {
+            positions.remove(existingPosition);
+            Position updatedPosition = new Position(inst, existingPosition.getQuantity(), existingPosition.getAverageCostBasis());
+            updatedPosition.addQuantity(qty, costBasis);
+            positions.add(updatedPosition);
+        }
+        else positions.add(new Position(inst, qty, costBasis));
 
         this.notifyObservers("ADDED: " + inst.getSymbol() + " x" + qty);
     }
@@ -37,8 +46,11 @@ public class Portfolio implements Observable<String> {
             }
         }
 
+        if (toRemove == null) {
+            throw new PositionNotFoundException("Not found!");
+        }
+        
         positions.remove(toRemove);
-        throw new PositionNotFoundException("Not found!");
     }
 
     public double totalMarketValue() {
@@ -86,7 +98,12 @@ public class Portfolio implements Observable<String> {
             String asset = pos.getInstrument().assetClass();
             Double assetValue = pos.marketValue();
 
-            assetPercentage.put(asset, assetValue);
+            if (assetPercentage.containsKey(asset)) {
+                assetPercentage.put(asset, assetPercentage.get(asset) + assetValue);
+            }
+            else {
+                assetPercentage.put(asset, assetValue);
+            }
         }
 
         for (Map.Entry<String, Double> entry : assetPercentage.entrySet()) {
@@ -98,7 +115,6 @@ public class Portfolio implements Observable<String> {
     }
 
     public void revalueAll(PricingStrategy strategy) {
-        if (positions.isEmpty()) return;
 
         for (Position pos : positions) {
             pos.getInstrument().updatePrice(strategy.calculateFairValue(pos.getInstrument()));
@@ -110,6 +126,14 @@ public class Portfolio implements Observable<String> {
     @Override
     public void addObserver(Observer<String> observer) {
         if (!observers.contains(observer)) observers.add(observer);
+        else {
+            for (Observer<String> o : observers) {
+                if (o.equals(observer)) { 
+                    removeObserver(observer);
+                    observers.add(observer);
+                }
+            }
+        }
     }
 
     @Override
